@@ -5,7 +5,7 @@ import chess.engine
 from typing import List, Dict, Union
 
 # --- Configuration Constants ---
-STOCKFISH_PATH = "stockfish-ubuntu-x86-64-avx2" 
+STOCKFISH_PATH = "stockfish/stockfish-ubuntu-x86-64-avx2" 
 STOCKFISH_DEPTH = 15
 ENGINE_TIME_LIMIT = 0.1
 
