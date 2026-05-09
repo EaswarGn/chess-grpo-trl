@@ -9,4 +9,10 @@ dependencies = [
     "datasets>=4.8.5",
     "tqdm>=4.67.3",
     "trl>=1.4.0",
+    "wandb>=0.26.1",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "trl[vllm]"
 ]
