@@ -36,6 +36,7 @@ training_args = GRPOConfig(
     num_generations=8,           # 'G' in GRPO: completions per prompt
     max_completion_length=1024,  # Enough headroom for Chain of Thought reasoning
     temperature=0.9,             # Encourages exploration in completions
+    num_generations_eval=100,
     
     # --- Batching & Throughput ---
     per_device_train_batch_size=4, 
@@ -70,5 +71,9 @@ trainer = GRPOTrainer(
     train_dataset=processed_dataset["train"],
     eval_dataset=processed_dataset["validation"]
 )
+
+print("Running baseline evaluation...")
+baseline_metrics = trainer.evaluate()
+print(f"Baseline Metrics: {baseline_metrics}")
 
 trainer.train()
