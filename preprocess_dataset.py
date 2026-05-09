@@ -21,13 +21,7 @@ def process_split(dataset, split_name, n=None, color="#00ff00"):
             {"content": build_user_prompt(example["fen"]), "role": "user"}
         ]
         
-        # We assume completion is also needed based on previous context
-        completion = [
-            {"content": build_completion(example["answer"], example["first_move"]), "role": "assistant"}
-        ]
-        
         example["prompt"] = prompt
-        example["completion"] = completion
         
         processed_data.append(example)
     
