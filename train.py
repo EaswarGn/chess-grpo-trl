@@ -1,7 +1,9 @@
 from trl import GRPOConfig, GRPOTrainer
-from transformers import AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from rewards import stockfish_reward
 from preprocess_dataset import process_dataset
+
+
 
 
 # 0. Configuration & Hyperparameters
@@ -9,6 +11,11 @@ MODEL_NAME = "codingmonster1234/chess-sft-modelv2"
 OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
 
 
 
@@ -50,33 +57,29 @@ training_args = GRPOConfig(
     save_total_limit=3,          # Keep only the last 3 checkpoints to save disk space
     push_to_hub=False,           # Set to True if you want to sync to HF Hub
     
-    # --- System & vLLM Integration ---
+    # --- Observability ---
+    report_to="wandb",           # Vital for monitoring reward vs. KL divergence
+    log_completions=True,        # Logs generated text to W&B for inspection
+    
+    
+)
+
+"""# --- System & vLLM Integration ---
     # Since you're targeting shared/colocated mode for ThunderCompute/Vast:
     use_vllm=True,               
     vllm_gpu_memory_utilization=0.3, # Leave room for the Trainer process,
     vllm_mode="colocate",
     vllm_max_model_length=2048,
-    vllm_enable_sleep_mode=True,
-    
-    # --- Observability ---
-    report_to="wandb",           # Vital for monitoring reward vs. KL divergence
-    log_completions=True,        # Logs generated text to W&B for inspection
-)
+    vllm_enable_sleep_mode=True,"""
 
 # 5. Initialize & Launch Trainer
 trainer = GRPOTrainer(
     model=model,
     reward_funcs=stockfish_reward,
+    processing_class=tokenizer,
     args=training_args,
     train_dataset=processed_dataset["train"],
     eval_dataset=processed_dataset["validation"]
 )
-
-print("Running baseline evaluation...")
-trainer.args.tempature = 0.0
-baseline_metrics = trainer.evaluate()
-print(f"Baseline Metrics: {baseline_metrics}")
-
-trainer.args.temparature = 0.9
 
 trainer.train()
