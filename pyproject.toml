@@ -14,5 +14,6 @@ dependencies = [
 
 [project.optional-dependencies]
 gpu = [
-    "trl[vllm]"
+    "trl[vllm]",
+    "bitsandbytes"
 ]
