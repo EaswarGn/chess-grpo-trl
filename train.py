@@ -73,7 +73,10 @@ trainer = GRPOTrainer(
 )
 
 print("Running baseline evaluation...")
+trainer.args.tempature = 0.0
 baseline_metrics = trainer.evaluate()
 print(f"Baseline Metrics: {baseline_metrics}")
+
+trainer.args.temparature = 0.9
 
 trainer.train()
