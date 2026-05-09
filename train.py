@@ -25,7 +25,6 @@ training_args = GRPOConfig(
     max_steps=100,               # Set to 100 steps per request
     learning_rate=5e-6,
     beta=0.04,                   # KL divergence coefficient (standard for GRPO)
-    warmup_ratio=0.1,
     lr_scheduler_type="cosine",
     optim="adamw_8bit",
     logging_steps=1,
@@ -44,7 +43,6 @@ training_args = GRPOConfig(
     gradient_checkpointing=True,   # Saves VRAM by recomputing activations
     
     # --- Checkpointing & Validation ---
-    evaluation_strategy="steps",
     eval_steps=20,               # Validate every 20 steps
     save_strategy="steps",
     save_steps=20,               # Checkpoint every 20 steps
@@ -54,7 +52,6 @@ training_args = GRPOConfig(
     # --- System & vLLM Integration ---
     # Since you're targeting shared/colocated mode for ThunderCompute/Vast:
     use_vllm=True,               
-    vllm_device="cuda:0",
     vllm_gpu_memory_utilization=0.5, # Leave room for the Trainer process,
     vllm_mode="colocate",
     vllm_max_model_length=2048,
