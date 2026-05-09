@@ -35,7 +35,6 @@ training_args = GRPOConfig(
 
     # --- GRPO Specifics (Rollout) ---
     num_generations=8,           # 'G' in GRPO: completions per prompt
-    max_prompt_length=512,       # Increased slightly to fit chess FEN + System instructions
     max_completion_length=1024,  # Enough headroom for Chain of Thought reasoning
     temperature=0.9,             # Encourages exploration in completions
     
@@ -58,6 +57,7 @@ training_args = GRPOConfig(
     vllm_device="cuda:0",
     vllm_gpu_memory_utilization=0.5, # Leave room for the Trainer process,
     vllm_mode="colocate",
+    vllm_max_model_length=2048,
     
     # --- Observability ---
     report_to="wandb",           # Vital for monitoring reward vs. KL divergence
