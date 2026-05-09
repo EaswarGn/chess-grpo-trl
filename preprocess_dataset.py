@@ -16,14 +16,9 @@ def process_split(dataset, split_name, color="#00ff00"):
             {"content": build_user_prompt(example["fen"]), "role": "user"}
         ]
         
-        completion = [
-            {"content": build_completion(example["answer"], example["first_move"]), "role": "assistant"}
-        ]
-        
         # 2. Append the new data to the existing dictionary
         # This keeps 'fen', 'answer', 'first_move', and any other original columns
         example["prompt"] = prompt
-        example["completion"] = completion
         
         processed_data.append(example)
     
