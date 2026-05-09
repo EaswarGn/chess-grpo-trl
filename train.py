@@ -52,9 +52,10 @@ training_args = GRPOConfig(
     # --- System & vLLM Integration ---
     # Since you're targeting shared/colocated mode for ThunderCompute/Vast:
     use_vllm=True,               
-    vllm_gpu_memory_utilization=0.5, # Leave room for the Trainer process,
+    vllm_gpu_memory_utilization=0.3, # Leave room for the Trainer process,
     vllm_mode="colocate",
     vllm_max_model_length=2048,
+    vllm_enable_sleep_mode=True,
     
     # --- Observability ---
     report_to="wandb",           # Vital for monitoring reward vs. KL divergence
