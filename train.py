@@ -8,7 +8,7 @@ from preprocess_dataset import process_dataset
 MODEL_NAME = "codingmonster1234/chess-sft-modelv2" 
 OUTPUT_DIR = "grpo-trl-chess_env"
 
-processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr")
+processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
 
 
 
