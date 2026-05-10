@@ -12,12 +12,6 @@ OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-
-if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
-
-
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
@@ -42,7 +36,7 @@ training_args = GRPOConfig(
     # --- GRPO Specifics (Rollout) ---
     num_generations=8,           # 'G' in GRPO: completions per prompt
     max_completion_length=1024,  # Enough headroom for Chain of Thought reasoning
-    temperature=0.9,             # Encourages exploration in completions
+    temperature=0.1,             # Encourages exploration in completions
     num_generations_eval=100,
     
     # --- Batching & Throughput ---
@@ -76,7 +70,6 @@ training_args = GRPOConfig(
 trainer = GRPOTrainer(
     model=model,
     reward_funcs=stockfish_reward,
-    processing_class=tokenizer,
     args=training_args,
     train_dataset=processed_dataset["train"],
     eval_dataset=processed_dataset["validation"]
