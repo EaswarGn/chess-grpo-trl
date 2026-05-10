@@ -34,7 +34,7 @@ training_args = GRPOConfig(
     max_grad_norm=1.0,           # Prevents exploding gradients during RL
 
     # --- GRPO Specifics (Rollout) ---
-    num_generations=8,           # 'G' in GRPO: completions per prompt
+    num_generations=2,           # 'G' in GRPO: completions per prompt
     max_completion_length=3072,  # Enough headroom for Chain of Thought reasoning
     temperature=0.1,             # Encourages exploration in completions
     num_generations_eval=100,
