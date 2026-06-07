@@ -2,12 +2,13 @@ from trl import GRPOConfig, GRPOTrainer
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from rewards import stockfish_reward
 from preprocess_dataset import process_dataset
+import torch
 
 
 
 
 # 0. Configuration & Hyperparameters
-MODEL_NAME = "codingmonster1234/chess-sft-modelv2" 
+MODEL_NAME = "codingmonster1234/Llama-3.1-Minitron-4B-Chess-Reasoning" 
 OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
@@ -15,7 +16,8 @@ processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    torch_dtype="auto",
+    dtype=torch.bfloat16
+    #torch_dtype="auto",
 )
 
 training_args = GRPOConfig(
@@ -54,6 +56,11 @@ training_args = GRPOConfig(
     report_to="wandb",           # Vital for monitoring reward vs. KL divergence
     log_completions=True,        # Logs generated text to W&B for inspection
     
+    use_vllm=True,               
+    vllm_mode="server",
+    vllm_server_base_url="http://localhost:8000",
+    vllm_max_model_length=3072,
+    #vllm_enable_sleep_mode=True,
     
 )
 
