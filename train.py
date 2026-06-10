@@ -8,7 +8,7 @@ import torch
 
 
 # 0. Configuration & Hyperparameters
-MODEL_NAME = "codingmonster1234/Llama-3.1-Minitron-4B-Chess-Reasoning" 
+MODEL_NAME = "codingmonster1234/Llama-3.1-8B-Instruct-Chess-Reasoning-SFT" 
 OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
