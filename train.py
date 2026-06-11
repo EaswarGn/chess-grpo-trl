@@ -46,9 +46,9 @@ training_args = GRPOConfig(
     gradient_checkpointing=True,   # Saves VRAM by recomputing activations
     
     # --- Checkpointing & Validation ---
-    eval_steps=20,               # Validate every 20 steps
+    eval_steps=100,               # Validate every 100 steps
     save_strategy="steps",
-    save_steps=20,               # Checkpoint every 20 steps
+    save_steps=100,               # Checkpoint every 100 steps
     save_total_limit=3,          # Keep only the last 3 checkpoints to save disk space
     push_to_hub=False,           # Set to True if you want to sync to HF Hub
     
