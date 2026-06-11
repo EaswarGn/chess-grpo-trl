@@ -55,6 +55,9 @@ training_args = GRPOConfig(
     
     # --- Observability ---
     report_to="wandb",           # Vital for monitoring reward vs. KL divergence
+    project="chess-reasoning-grpo",
+    run_name=f"{MODEL_NAME}_grpo",
+    
     log_completions=True,        # Logs generated text to W&B for inspection
     
     use_vllm=True,               
