@@ -37,7 +37,7 @@ training_args = GRPOConfig(
     num_generations=4,           # 'G' in GRPO: completions per prompt
     max_completion_length=2048,  # Enough headroom for Chain of Thought reasoning
     temperature=1.0,             # Encourages exploration in completions
-    num_generations_eval=100,
+    num_generations_eval=4,
     
     # --- Batching & Throughput ---
     per_device_train_batch_size=1, 
