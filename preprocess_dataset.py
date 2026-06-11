@@ -12,6 +12,10 @@ def process_split(dataset, split_name, n=None, color="#00ff00"):
     if split_name == "validation" or split_name == "test":
         return
         n = 50
+        
+    if split_name == "train":
+        print(f"Shuffling {split_name} split...")
+        dataset = dataset.shuffle(seed=42)  # seed ensures reproducibility
     
     # 1. Limit the dataset to n items if specified
     if n is not None:
