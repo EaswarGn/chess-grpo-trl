@@ -23,7 +23,6 @@ model = AutoModelForCausalLM.from_pretrained(
 training_args = GRPOConfig(
     # --- Training Loop & Progress ---
     output_dir=OUTPUT_DIR,
-    run_name="grpo-chess-puzzles-v1",
     max_steps=100,               # Set to 100 steps per request
     learning_rate=5e-6,
     beta=0.04,                   # KL divergence coefficient (standard for GRPO)
