@@ -47,6 +47,7 @@ training_args = GRPOConfig(
     
     # --- Checkpointing & Validation ---
     eval_steps=100,               # Validate every 100 steps
+    eval_on_start=True,
     save_strategy="steps",
     save_steps=100,               # Checkpoint every 100 steps
     save_total_limit=3,          # Keep only the last 3 checkpoints to save disk space
