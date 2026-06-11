@@ -4,15 +4,11 @@ from rewards import stockfish_reward
 from preprocess_dataset import process_dataset
 import torch
 
-
-
-
 # 0. Configuration & Hyperparameters
 MODEL_NAME = "codingmonster1234/Qwen3-4B-Instruct-2507-Chess-Reasoning-SFT-v2" 
 OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
-
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
@@ -24,6 +20,7 @@ training_args = GRPOConfig(
     # --- Training Loop & Progress ---
     output_dir=OUTPUT_DIR,
     max_steps=100,               # Set to 100 steps per request
+    num_train_epochs=3,         # Forces trainer to strictly respect max_steps
     learning_rate=5e-6,
     beta=0.04,                   # KL divergence coefficient (standard for GRPO)
     lr_scheduler_type="cosine",
@@ -37,7 +34,6 @@ training_args = GRPOConfig(
     num_generations=4,           # 'G' in GRPO: completions per prompt
     max_completion_length=2048,  # Enough headroom for Chain of Thought reasoning
     temperature=1.0,             # Encourages exploration in completions
-    num_generations_eval=4,
     
     # --- Batching & Throughput ---
     per_device_train_batch_size=1, 
@@ -45,10 +41,9 @@ training_args = GRPOConfig(
     gradient_checkpointing=True,   # Saves VRAM by recomputing activations
     
     # --- Checkpointing & Validation ---
-    eval_steps=100,               # Validate every 100 steps
-    eval_on_start=True,
+    eval_strategy="no",           # Explicitly disable evaluation
     save_strategy="steps",
-    save_steps=100,               # Checkpoint every 100 steps
+    save_steps=25,               # Checkpoint every 25 steps
     save_total_limit=3,          # Keep only the last 3 checkpoints to save disk space
     push_to_hub=False,           # Set to True if you want to sync to HF Hub
     
@@ -64,7 +59,6 @@ training_args = GRPOConfig(
     vllm_server_base_url="http://localhost:8000",
     vllm_max_model_length=3072,
     #vllm_enable_sleep_mode=True,
-    
 )
 
 """# --- System & vLLM Integration ---
@@ -75,13 +69,12 @@ training_args = GRPOConfig(
     vllm_max_model_length=2048,
     vllm_enable_sleep_mode=True,"""
 
-# 5. Initialize & Launch Trainer
+# 5. Initialize & Launch Trainer (purely for training)
 trainer = GRPOTrainer(
     model=model,
     reward_funcs=stockfish_reward,
     args=training_args,
-    train_dataset=processed_dataset["train"],
-    eval_dataset=processed_dataset["validation"]
+    train_dataset=processed_dataset["train"]
 )
 
 trainer.train()

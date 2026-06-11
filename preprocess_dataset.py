@@ -10,6 +10,7 @@ def process_split(dataset, split_name, n=None, color="#00ff00"):
     processed_data = []
     
     if split_name == "validation" or split_name == "test":
+        return
         n = 50
     
     # 1. Limit the dataset to n items if specified
@@ -46,6 +47,7 @@ def process_dataset(dataset_id: str = "codingmonster1234/chess-puzzles-rlvr", n:
             n=n, 
             color="#2ecc71"
         )
+        
         processed_splits[split] = processed_split
 
     # 3. Combine into a DatasetDict
