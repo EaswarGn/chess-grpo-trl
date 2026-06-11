@@ -8,7 +8,7 @@ import torch
 
 
 # 0. Configuration & Hyperparameters
-MODEL_NAME = "codingmonster1234/Llama-3.1-8B-Instruct-Chess-Reasoning-SFT" 
+MODEL_NAME = "codingmonster1234/Llama-3.1-8B-Instruct-Chess-Reasoning-SFT-v2" 
 OUTPUT_DIR = "grpo-trl-chess_env"
 
 processed_dataset = process_dataset("codingmonster1234/chess-puzzles-rlvr", n=10000)
@@ -35,14 +35,14 @@ training_args = GRPOConfig(
     max_grad_norm=1.0,           # Prevents exploding gradients during RL
 
     # --- GRPO Specifics (Rollout) ---
-    num_generations=2,           # 'G' in GRPO: completions per prompt
+    num_generations=4,           # 'G' in GRPO: completions per prompt
     max_completion_length=2048,  # Enough headroom for Chain of Thought reasoning
     temperature=1.0,             # Encourages exploration in completions
     num_generations_eval=100,
     
     # --- Batching & Throughput ---
-    per_device_train_batch_size=4, 
-    gradient_accumulation_steps=4, # Effective Batch Size = 1 * 4 * 8 (G) = 32
+    per_device_train_batch_size=1, 
+    gradient_accumulation_steps=4, # Effective Batch Size = 1 * 4 * 4 (G) = 16
     gradient_checkpointing=True,   # Saves VRAM by recomputing activations
     
     # --- Checkpointing & Validation ---
