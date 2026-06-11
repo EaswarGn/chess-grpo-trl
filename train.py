@@ -20,7 +20,7 @@ training_args = GRPOConfig(
     # --- Training Loop & Progress ---
     output_dir=OUTPUT_DIR,
     max_steps=100,               # Set to 100 steps per request
-    num_train_epochs=3,         # Forces trainer to strictly respect max_steps
+    num_train_epochs=-1,         # Forces trainer to strictly respect max_steps
     learning_rate=5e-6,
     beta=0.04,                   # KL divergence coefficient (standard for GRPO)
     lr_scheduler_type="cosine",
