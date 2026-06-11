@@ -5,7 +5,7 @@ from transformers import AutoTokenizer
 # 1. Define the server URL and the model name to initialize the tokenizer
 # Replace with your actual server IP/port and Hugging Face model identifier
 SERVER_URL = "http://0.0.0.0:8000/chat/"
-MODEL_NAME = "codingmonster1234/Llama-3.1-8B-Instruct-Chess-Reasoning-SFT-v2"  # Change to the model running on the server
+MODEL_NAME = "codingmonster1234/Qwen3-4B-Instruct-2507-Chess-Reasoning-SFT-v2"  # Change to the model running on the server
 
 # Initialize the tokenizer to decode token IDs back into English text
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
